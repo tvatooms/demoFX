@@ -36,6 +36,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<classifier>exec</classifier>
+					<mainClass>com.tva.RestEngine.Main</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,12 +1,12 @@
-package payroll;
+package com.tva.RestEngine;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PayrollApplication {
+public class Main {
 
 	public static void main(String... args) {
-		SpringApplication.run(PayrollApplication.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 }

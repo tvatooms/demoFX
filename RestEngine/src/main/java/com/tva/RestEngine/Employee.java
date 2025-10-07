@@ -1,4 +1,4 @@
-package payroll;
+package com.tva.RestEngine;
 
 import java.util.Objects;
 
@@ -7,18 +7,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-class Employee {
+class Partition {
 
 	private @Id @GeneratedValue Long id;
 	private String name;
-	private String role;
+	 
 
-	Employee() {}
+	Partition() {}
 
-	Employee(String name, String role) {
+	Partition(String name) {
 
 		this.name = name;
-		this.role = role;
+		 
 	}
 
 	public Long getId() {
@@ -29,9 +29,7 @@ class Employee {
 		return this.name;
 	}
 
-	public String getRole() {
-		return this.role;
-	}
+ 
 
 	public void setId(Long id) {
 		this.id = id;
@@ -41,21 +39,8 @@ class Employee {
 		this.name = name;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-
-		if (this == o)
-			return true;
-		if (!(o instanceof Employee))
-			return false;
-		Employee employee = (Employee) o;
-		return Objects.equals(this.id, employee.id) && Objects.equals(this.name, employee.name)
-				&& Objects.equals(this.role, employee.role);
-	}
+ 
+	 
 
 	@Override
 	public int hashCode() {
