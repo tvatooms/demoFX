@@ -44,11 +44,11 @@ class Partition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.id, this.name, this.role);
+		return Objects.hash(this.id, this.name);
 	}
 
 	@Override
 	public String toString() {
-		return "Employee{" + "id=" + this.id + ", name='" + this.name + '\'' + ", role='" + this.role + '\'' + '}';
+		return "Partition{" + "id=" + this.id + ", name='" + this.name +  '\'' + '}';
 	}
 }
