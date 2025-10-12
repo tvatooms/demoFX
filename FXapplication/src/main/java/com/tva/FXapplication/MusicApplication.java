@@ -1,12 +1,12 @@
 package com.tva.FXapplication;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -32,13 +32,26 @@ public class MusicApplication extends Application {
     public void start(Stage primaryStage) {
 
         GridPane pane = new GridPane();
+        ColumnConstraints colThird = new ColumnConstraints();
+        colThird.setPercentWidth(100.0/3.0);
+        RowConstraints rowThird = new RowConstraints();
+        rowThird.setPercentHeight(100.0/3.0);
+        pane.getColumnConstraints().addAll(colThird,colThird,colThird);
+        pane.getRowConstraints().addAll(rowThird,rowThird,rowThird);
+        pane.setGridLinesVisible(true);
+      //  pane.setHgap(10);
+       // pane.setVgap(10);
+        //pane.setPadding(new Insets(0, 10, 0, 10));
         // InputStream stream = new
         // FileInputStream("/media/tva/save2/dev/demoFX/FXapplication/resources/add.png");
         // Image image = new Image(stream);
-        String url =  getClass().getResource("add.png").toString();
+        String url = getClass().getResource("/add.png").toString();
         ImageView imageView = new ImageView(url);
-        pane.add(imageView, 1, 1);
-
+        pane.getChildren().add(imageView);
+        pane.setConstraints(imageView,1,1);
+        imageView.fitWidthProperty().bind(pane.widthProperty().multiply(0.5));
+        imageView.fitHeightProperty().bind(pane.heightProperty().multiply(0.5));
+        imageView.setPreserveRatio(true);
         pane.setOnDragDropped((DragEvent event) -> {
             Dragboard db = event.getDragboard();
 
@@ -48,8 +61,7 @@ public class MusicApplication extends Application {
                 success = true;
             }
             /*
-             * let the source know whether the string was successfully
-             * transferred and used
+             * let the source know whether the string was successfully transferred and used
              */
             event.setDropCompleted(success);
             event.consume();
@@ -65,6 +77,7 @@ public class MusicApplication extends Application {
         primaryStage.setTitle("Partition simplifier");
 
         primaryStage.show();
+
     }
 
 }

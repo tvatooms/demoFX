@@ -9,9 +9,9 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tva</groupId>
-	<artifactId>FXapplication</artifactId>
+	<artifactId>Start</artifactId>
 	<version>0.1</version>
-	<name>FXapplication</name>
+	<name>Start</name>
 	<description>Mixing JavaFX and Spring Boot</description>
 	<packaging>pom</packaging>
 	<url/>
@@ -32,52 +32,11 @@
 	</properties>
 	<modules>
 		<!--<module>RestEngine</module>-->
+		<module>FXapplication</module>
 		<module>RestEngine</module>
-		<!-- <module>FXapplication</module> -->
 	</modules>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-controls</artifactId>
-			<version>21.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-fxml</artifactId>
-			<version>21.0.8</version>
-		</dependency>
-	</dependencies>
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.graalvm.buildtools</groupId>
-				<artifactId>native-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<classifier>exec</classifier>
-					<mainClass>com.tva.FXapplication.Main</mainClass>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.openjfx</groupId>
-				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.8</version>
-				<configuration>
-					<mainClass>HelloFX</mainClass>
-				</configuration>
-			</plugin>
+		<plugins>		
 		</plugins>
 	</build>
 </project>

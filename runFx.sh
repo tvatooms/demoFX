@@ -1,1 +1,1 @@
-./mvnw spring-boot:run 
+cd FXapplication;mvn spring-boot:run 

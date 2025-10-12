@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.tva</groupId>
-		<artifactId>FXapplication</artifactId>
+		<artifactId>Start</artifactId>
 		<version>0.1</version>
 	</parent>
 	<artifactId>RestEngine</artifactId>
