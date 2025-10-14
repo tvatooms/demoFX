@@ -29,6 +29,11 @@ class PartitionController {
 
 	// Aggregate root
 
+	@GetMapping("/")
+	String getVersion()
+	{
+		return ("Partition service v0.5");
+	}
 	// tag::get-aggregate-root[]
 	@GetMapping("/partitions")
 	CollectionModel<EntityModel<Partition>> all() {
