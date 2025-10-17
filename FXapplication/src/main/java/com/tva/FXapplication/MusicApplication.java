@@ -1,19 +1,16 @@
 package com.tva.FXapplication;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.io.*;
+//import javafx.scene.image.Image;
+
+import java.io.File;
 
 import org.springframework.aop.interceptor.ConcurrencyThrottleInterceptor;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -71,7 +68,8 @@ public class MusicApplication extends Application {
 
             boolean success = false;
             if (db.hasFiles()) {
-
+                final File file = db.getFiles().get(0);
+                controller.sendFile(file.getAbsolutePath());
                 success = true;
             }
             /*

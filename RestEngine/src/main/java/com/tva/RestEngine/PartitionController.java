@@ -2,18 +2,25 @@ package com.tva.RestEngine;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 // tag::hateoas-imports[]
 // end::hateoas-imports[]
@@ -30,12 +37,12 @@ class PartitionController {
 	// Aggregate root
 
 	@GetMapping("/")
-	String getVersion()
-	{
+	String getVersion() {
 		return ("Partition service v0.5");
 	}
+
 	// tag::get-aggregate-root[]
-	@GetMapping("/partitions")
+	@GetMapping("/Partitions")
 	CollectionModel<EntityModel<Partition>> all() {
 
 		List<EntityModel<Partition>> Partitions = repository.findAll().stream()
@@ -48,11 +55,23 @@ class PartitionController {
 	}
 	// end::get-aggregate-root[]
 
-	@PostMapping("/Partitions")
-	Partition newPartition(@RequestBody Partition newPartition) {
-		return repository.save(newPartition);
+	@PostMapping(value = "/Partitions/add", produces = MediaType.IMAGE_PNG_VALUE)
+	ResponseEntity<?> newPartition(@RequestParam("file") MultipartFile image, @RequestParam("name") String name)
+			throws IOException {
+
+		String fileName = image.getOriginalFilename();
+		System.out.println("NEW PARTITION " + name + "   " + fileName);
+		Partition part = new Partition();
+		File fileDest = new File("./" + name + ".png");
+		image.transferTo(fileDest.toPath());
+		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/Partitions/test")
+	ResponseEntity<?> test(@RequestParam("key1") String val1, @RequestParam("key2") String val2) {
+		System.out.println("TEST " + val1 + "  " + val2);
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
 	// Single item
 
 	// tag::get-single-item[]
@@ -73,7 +92,7 @@ class PartitionController {
 
 		return repository.findById(id) //
 				.map(Partition -> {
-					Partition.setName(newPartition.getName());					
+					Partition.setName(newPartition.getName());
 					return repository.save(Partition);
 				}) //
 				.orElseGet(() -> {
