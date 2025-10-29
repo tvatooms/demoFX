@@ -1,17 +1,19 @@
 package com.tva.RestEngine;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
+import java.lang.InterruptedException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
+import javafx.scene.image.Image;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +28,12 @@ import org.springframework.web.multipart.MultipartFile;
 // end::hateoas-imports[]
 
 @RestController
-class PartitionController {
+class PartitionApiController {
 
 	private final PartitionRepository repository;
+	// private ProcessingController process;
 
-	PartitionController(PartitionRepository repository) {
+	PartitionApiController(PartitionRepository repository) {
 		this.repository = repository;
 	}
 
@@ -47,23 +50,30 @@ class PartitionController {
 
 		List<EntityModel<Partition>> Partitions = repository.findAll().stream()
 				.map(Partition -> EntityModel.of(Partition,
-						linkTo(methodOn(PartitionController.class).one(Partition.getId())).withSelfRel(),
-						linkTo(methodOn(PartitionController.class).all()).withRel("Partitions")))
+						linkTo(methodOn(PartitionApiController.class).one(Partition.getId())).withSelfRel(),
+						linkTo(methodOn(PartitionApiController.class).all()).withRel("Partitions")))
 				.collect(Collectors.toList());
 
-		return CollectionModel.of(Partitions, linkTo(methodOn(PartitionController.class).all()).withSelfRel());
+		return CollectionModel.of(Partitions, linkTo(methodOn(PartitionApiController.class).all()).withSelfRel());
 	}
 	// end::get-aggregate-root[]
 
 	@PostMapping(value = "/Partitions/add", produces = MediaType.IMAGE_PNG_VALUE)
-	ResponseEntity<?> newPartition(@RequestParam("file") MultipartFile image, @RequestParam("name") String name)
+	ResponseEntity<?> newPartition(@RequestParam("file") MultipartFile imageData, @RequestParam("name") String name)
 			throws IOException {
 
-		String fileName = image.getOriginalFilename();
-		System.out.println("NEW PARTITION " + name + "   " + fileName);
-		Partition part = new Partition();
-		File fileDest = new File("./" + name + ".png");
-		image.transferTo(fileDest.toPath());
+			
+		File fileDest = new File("./"+name + ".png");
+		imageData.transferTo(fileDest.toPath());
+		//System.out.println("NEW PARTITION " + name + "   " + fileName);
+		
+		System.out.println("PATH: " + fileDest.toURI().toURL().toString());
+		try {
+			process(fileDest);
+		} catch (InterruptedException e) {
+
+		}
+		System.out.println("END");
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
@@ -82,8 +92,8 @@ class PartitionController {
 				.orElseThrow(() -> new PartitionNotFoundException(id));
 
 		return EntityModel.of(Partition, //
-				linkTo(methodOn(PartitionController.class).one(id)).withSelfRel(),
-				linkTo(methodOn(PartitionController.class).all()).withRel("Partitions"));
+				linkTo(methodOn(PartitionApiController.class).one(id)).withSelfRel(),
+				linkTo(methodOn(PartitionApiController.class).all()).withRel("Partitions"));
 	}
 	// end::get-single-item[]
 
@@ -103,5 +113,19 @@ class PartitionController {
 	@DeleteMapping("/Partitions/{id}")
 	void deletePartition(@PathVariable Long id) {
 		repository.deleteById(id);
+	}
+
+	@Async
+	public CompletableFuture<Partition> process(File fileSource) throws InterruptedException {
+		System.out.println("BEGIN");
+		for (int i = 0; i < 5; ++i) {
+			Thread.sleep(1000);
+			System.out.println(("*"));
+		}
+		//String fileName = fileSource.getOriginalFilename();
+		Partition partition = new Partition("async");
+		
+		System.out.println("END");
+		return CompletableFuture.completedFuture(partition);
 	}
 }
